@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PneumoVision AI Pro - Multi-Disease Thoracic Diagnostic Suite</title>
+    <!-- High-Legibility Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="theme-light">
+    <!-- Clean Medical Soft Background -->
+    <div class="bg-gradient-canvas"></div>
+
+    <div class="container">
+        <!-- Clean Header -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-lungs-virus"></i>
+                </div>
+                <div class="brand-titles">
+                    <h1>PneumoVision <span class="brand-accent">AI Pro</span></h1>
+                    <p class="subtitle">Multi-Disease Thoracic Radiography Classifier</p>
+                </div>
+            </div>
+
+            <div class="header-status">
+                <span class="status-badge green">
+                    <span class="status-dot"></span> AI Model Active • 2 Pathologies Supported
+                </span>
+            </div>
+        </header>
+
+        <!-- Main Workspace Grid -->
+        <main class="main-content">
+            <!-- Upload & Results Workspace -->
+            <div class="workspace-grid">
+                <!-- Left Column: Upload Box -->
+                <div class="card upload-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-cloud-arrow-up text-blue"></i> Upload Chest X-Ray Scan</h3>
+                    </div>
+
+                    <div class="drop-zone" id="drop-area">
+                        <form id="upload-form">
+                            <input type="file" id="file-elem" accept="image/png, image/jpeg, image/jpg" hidden>
+                            <div class="drop-zone-content">
+                                <div class="icon-circle">
+                                    <i class="fa-solid fa-image"></i>
+                                </div>
+                                <h3>Drag & Drop X-Ray Image Here</h3>
+                                <p>or click below to choose a file</p>
+                                <label for="file-elem" class="btn primary-btn">
+                                    <i class="fa-solid fa-folder-open"></i> Browse Files
+                                </label>
+                                <span class="file-note">Supported formats: PNG, JPG, JPEG (Max 10MB)</span>
+                            </div>
+                        </form>
+
+                        <!-- Preview Frame -->
+                        <div id="preview-section" class="preview-container hidden">
+                            <div class="image-viewport">
+                                <img id="image-preview" src="" alt="X-Ray Preview">
+                                <div class="laser-scanner"></div>
+                            </div>
+                            <div class="preview-actions">
+                                <button id="analyze-btn" class="btn action-btn">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze X-Ray Image
+                                </button>
+                                <button id="change-file-btn" class="btn secondary-btn">
+                                    <i class="fa-solid fa-rotate"></i> Change File
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="loading" class="loader-box hidden">
+                            <div class="spinner"></div>
+                            <h4>AI Engine Scanning X-Ray Features...</h4>
+                            <p>Calculating multi-disease probability distributions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Diagnostic Results Report -->
+                <div id="results-card" class="card results-card hidden">
+                    <div class="card-header">
+                        <div>
+                            <h3>Diagnostic Analysis Report</h3>
+                            <span class="subtitle">Automated Thoracic Pathology Screening</span>
+                        </div>
+                        <div id="status-badge" class="result-badge">
+                            <!-- Dynamic Status -->
+                        </div>
+                    </div>
+
+                    <!-- Primary Diagnosis Banner -->
+                    <div class="diagnosis-banner" id="diag-banner">
+                        <div class="banner-left">
+                            <span class="banner-label">Primary AI Diagnosis</span>
+                            <h2 id="primary-diagnosis-text">--</h2>
+                            <p id="radiological-findings" class="findings-text">--</p>
+                        </div>
+                        <div class="banner-right" style="display: flex; gap: 15px; text-align: center; justify-content: flex-end; flex-wrap: wrap;">
+                            <div>
+                                <span class="banner-label">Accuracy Score</span>
+                                <div class="score-box" style="padding: 10px 15px;">
+                                    <span id="confidence-value" class="score-num" style="font-size: 1.5rem;">0%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="banner-label">Stage</span>
+                                <div class="score-box" style="padding: 10px 15px; background: rgba(255,255,255,0.15);">
+                                    <span id="stage-value" class="score-num" style="font-size: 1.1rem; color: #fff;">--</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="banner-label">Exec Time</span>
+                                <div class="score-box" style="padding: 10px 15px; background: rgba(255,255,255,0.15);">
+                                    <span id="time-value" class="score-num" style="font-size: 1.1rem; color: #fff;">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Disease Probability Breakdown -->
+                    <div class="section-box">
+                        <div class="box-title">
+                            <i class="fa-solid fa-chart-bar text-blue"></i>
+                            <h4>Multi-Disease Probability Distribution</h4>
+                        </div>
+                        <div class="prob-list" id="probability-list">
+                            <!-- Dynamic Bars -->
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Supported Diseases & Accuracy Matrix -->
+            <section class="matrix-section">
+                <div class="section-heading">
+                    <i class="fa-solid fa-shapes text-blue"></i>
+                    <h2>Supported Diseases & Accuracy Matrix</h2>
+                </div>
+
+                <div class="matrix-grid">
+                    <div class="matrix-card">
+                        <div class="card-top">
+                            <span class="card-icon green"><i class="fa-solid fa-heart-pulse"></i></span>
+                            <span class="acc-tag green">98.5% Accuracy</span>
+                        </div>
+                        <h3>Normal (Healthy)</h3>
+                        <p>Clear lung parenchyma without consolidation, effusion, or pneumothorax.</p>
+                    </div>
+
+                    <div class="matrix-card">
+                        <div class="card-top">
+                            <span class="card-icon blue"><i class="fa-solid fa-bacteria"></i></span>
+                            <span class="acc-tag blue">96.8% Accuracy</span>
+                        </div>
+                        <h3>Pneumonia</h3>
+                        <p>Focal lobar consolidation with air bronchograms, typical of acute pulmonary infection.</p>
+                    </div>
+
+
+                </div>
+            </section>
+
+            <!-- Error Banner -->
+            <div id="error-message" class="error-banner hidden">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="error-text">An error occurred.</span>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p><i class="fa-solid fa-shield-halved"></i> <strong>Medical Disclaimer:</strong> PneumoVision AI Pro is an auxiliary diagnostic support tool designed for educational and research purposes. All predictions should be validated by a healthcare professional.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
