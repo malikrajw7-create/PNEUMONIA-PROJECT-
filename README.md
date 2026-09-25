@@ -1,5 +1,7 @@
 # AI-Based Pneumonia Detection from Chest X-Ray Images Using CNN
 
+**AI-Based Early Detection of Lung Diseases Using Chest X-Ray Images and Deep Learning**
+
 ## Project Description
 A deep learning system that takes a chest X-ray image as input and predicts whether the image is NORMAL or indicates PNEUMONIA. It includes a custom CNN architecture, a transfer learning alternative (MobileNetV2), and a responsive Flask web application for inference.
 
